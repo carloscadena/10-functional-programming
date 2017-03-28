@@ -2,7 +2,7 @@
 
 // REVIEW: Check out all of the functions that we've cleaned up with arrow function syntax.
 
-// TODO: Wrap the entire contents of this file in an IIFE.
+// DONE: Wrap the entire contents of this file in an IIFE.
 // Pass in to the IIFE a module, upon which objects can be attached for later access.
 function Article(opts) {
   // REVIEW: Lets review what's actually happening here, and check out some new syntax!!
@@ -27,6 +27,10 @@ Article.loadAll = rows => {
   // TODO: Refactor this forEach code, by using a `.map` call instead, since what we are trying to accomplish
   // is the transformation of one colleciton into another.
 
+  Article.all = rows.map(function(ele) {
+    return new Article(ele);
+  });
+
   /* OLD forEach():
   rawData.forEach(function(ele) {
   Article.all.push(new Article(ele));
@@ -47,9 +51,14 @@ Article.fetchAll = callback => {
 
 // TODO: Chain together a `map` and a `reduce` call to get a rough count of all words in all articles.
 Article.numWordsAll = () => {
-  return Article.all.map().reduce()
+  return Article.all.map(function(article){
+    return article.body.split(' ').length})
+    .reduce(function(acc, val){
+      return acc + val;
+    }, 0)
 };
 
+console.log(Article.numWordsAll());
 // TODO: Chain together a `map` and a `reduce` call to produce an array of unique author names.
 Article.allAuthors = () => {
   return Article.all.map().reduce();
