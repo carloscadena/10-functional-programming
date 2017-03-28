@@ -1,7 +1,5 @@
 'use strict';
-
 // REVIEW: Check out all of the functions that we've cleaned up with arrow function syntax.
-
 // DONE: Wrap the entire contents of this file in an IIFE.
 // Pass in to the IIFE a module, upon which objects can be attached for later access.
 (function(module){
@@ -37,7 +35,6 @@
     Article.all.push(new Article(ele));
   });
   */
-
   };
 
   Article.fetchAll = callback => {
@@ -60,23 +57,35 @@
   };
 
   console.log(Article.numWordsAll());
-  // TODO: Chain together a `map` and a `reduce` call to produce an array of unique author names.
+  // Done: Chain together a `map` and a `reduce` call to produce an array of unique author names.
   Article.allAuthors = () => {
     return Article.all.map(article => article.author).reduce(function(acc, ele){
-      if (acc.indexOf(ele.author) === -1) {
-        acc.push(ele.author);
+      if (acc.indexOf(ele) === -1) {
+        acc.push(ele);
       }
+      return acc;
     }, []);
   };
 
   Article.numWordsByAuthor = () => {
     return Article.allAuthors().map(author => {
-      // TODO: Transform each author string into an object with properties for
-      // the author's name, as well as the total number of words across all articles
-      // written by the specified author.
-
+      return {
+        name: author,
+        totalWordsByThisAuthor: Article.all.filter(function(articleObject) {
+          return articleObject.author === author;
+        })
+        .map(function(articleObject) {
+          return articleObject.body.split(' ').length;
+        })
+        .reduce(function(acc, value) {
+          return acc + value;
+        })
+      };
     })
   };
+  // Done: Transform each author string into an object with properties for
+  // the author's name, as well as the total number of words across all articles
+  // written by the specified author.
 
   Article.truncateTable = callback => {
     $.ajax({
@@ -121,4 +130,4 @@
     .then(callback);
   };
   module.Article = Article;
-}(window))
+}) (window)
